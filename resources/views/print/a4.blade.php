@@ -4,82 +4,151 @@
 
 <meta charset="UTF-8">
 
-<title>Impression Vouchers</title>
+<title>ESCALE LINK - Impression A4</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 
+@page{
+    size:A4;
+    margin:8mm;
+}
+
 body{
+    margin:0;
     background:#fff;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:12px;
-    margin:20px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:11px;
 }
 
-.no-print{
-    margin-bottom:20px;
+.toolbar{
+    margin:15px;
 }
 
-.ticket-container{
-    display:flex;
-    flex-wrap:wrap;
-}
+.sheet{
 
-.ticket-wrapper{
-    width:25%;
-    padding:8px;
-    box-sizing:border-box;
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:8px;
+
 }
 
 .ticket{
+
     border:1px dashed #000;
-    padding:10px;
+
+    height:135px;
+
+    padding:6px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
     text-align:center;
-    min-height:230px;
-    box-sizing:border-box;
+
+    page-break-inside:avoid;
+
 }
 
-.ticket h5{
-    margin:0;
+.header{
+
     font-weight:bold;
+
+    font-size:13px;
+
+    color:#198754;
+
 }
 
-.ticket hr{
-    margin:8px 0;
+.subtitle{
+
+    font-size:10px;
+
+    color:#555;
+
+}
+
+.ticket-number{
+
+    font-size:9px;
+
+    color:#888;
+
+}
+
+.code-title{
+
+    font-size:9px;
+
+    color:#666;
+
 }
 
 .code{
-    font-size:22px;
+
+    font-size:20px;
+
     font-weight:bold;
-    margin:10px 0;
+
     letter-spacing:2px;
+
+    margin:3px 0;
+
 }
 
-.info{
-    margin-top:8px;
-    line-height:1.6;
+.profile{
+
+    font-size:9px;
+
 }
 
 .footer{
-    margin-top:12px;
-    font-size:11px;
+
+    font-size:9px;
+
+    color:#666;
+
+}
+
+.price{
+
+    font-size:10px;
+
+    font-weight:bold;
+
 }
 
 @media print{
 
-    .no-print{
-        display:none;
-    }
+.toolbar{
 
-    body{
-        margin:0;
-    }
+display:none;
 
-    .ticket-wrapper{
-        page-break-inside:avoid;
-        break-inside:avoid;
-    }
+}
+
+body{
+
+margin:0;
+
+}
+
+.sheet{
+
+gap:5px;
+
+}
+
+.ticket{
+
+height:130px;
+
+}
 
 }
 
@@ -89,55 +158,93 @@ body{
 
 <body>
 
-<div class="no-print">
+<div class="toolbar">
 
-<button onclick="window.print()" class="btn btn-success">
+<button
+onclick="window.print()"
+class="btn btn-success">
+
 Imprimer
+
 </button>
 
-<a href="{{ url()->previous() }}" class="btn btn-secondary">
+<a
+href="{{ url()->previous() }}"
+class="btn btn-secondary">
+
 Retour
+
 </a>
 
 </div>
 
-<div class="ticket-container">
+<div class="sheet">
 
 @foreach($vouchers as $voucher)
 
-<div class="ticket-wrapper">
-
 <div class="ticket">
 
-<h5>ESCALE LINK</h5>
+<div>
 
-<hr>
+<div class="header">
+
+ESCALE LINK
+
+</div>
+
+<div class="subtitle">
+
+Internet Haut Débit
+
+</div>
+
+<div class="ticket-number">
+
+Ticket
+{{ $voucher->ticket_number }}
+
+</div>
+
+</div>
+
+<div>
+
+<div class="code-title">
+
+CODE DE CONNEXION
+
+</div>
 
 <div class="code">
+
 {{ $voucher->code }}
-</div>
-
-<div class="info">
-
-Utilisateur :
-<b>{{ $voucher->username }}</b>
-
-<br>
-
-Mot de passe :
-<b>{{ $voucher->password }}</b>
-
-<br>
-
-Profil :
-<b>{{ $voucher->profile }}</b>
 
 </div>
 
-<hr>
+</div>
+
+<div>
+
+<div class="profile">
+
+{{ $voucher->profile }}
+
+</div>
+
+@if($voucher->price>0)
+
+<div class="price">
+
+{{ number_format($voucher->price,0,',',' ') }} FCFA
+
+</div>
+
+@endif
 
 <div class="footer">
-Bon de connexion
+
+www.escalelink.sn
+
 </div>
 
 </div>
